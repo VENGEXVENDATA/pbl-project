@@ -1,0 +1,124 @@
+#include <iostream>
+using namespace std;
+class functions;
+class Node{
+    int data=0;
+    Node*left=NULL;
+    Node*right=NULL;
+    bool isthreaded;
+    Node(int data){
+        this->data=data;
+        this->left=NULL;
+        this->right=NULL;
+
+    }
+    friend class functions;
+};
+
+
+class functions{
+    private:
+    Node *root;
+    public:   
+    Node*binarytree(Node*root){
+        int data;
+        cout<<"\n Enter data";
+        cin>>data;
+        root = new Node(data);
+        if(data== -1){
+            return NULL;
+        }
+        cout<<"\n enter data to insert in left of "<<data<<endl;
+        root->left=binarytree(root->left);
+        cout<<"\n enter data to insert in right of "<<data<<endl;
+        root->right=binarytree(root->right);
+        return root;
+        
+    }
+    Node*threadedtree(Node*root){
+        if(root==NULL){
+            return NULL;
+        }
+        if (root->left==NULL && root->right==NULL){
+            return root;
+        }
+        if (root->left!=NULL){
+            Node*pTemp=threadedtree(root->left);
+            pTemp->right=root;
+            pTemp->isthreaded=true;
+        }
+        if (root->right==NULL){
+            return root;
+        }
+        return threadedtree(root->right);
+    }
+    
+    
+    
+    Node*leftmost(Node*root){
+        while(root!=NULL&&root->left!=NULL){
+            root=root->left;
+            return root;
+        }
+    }
+    void inorder(Node*root){
+        if(root==NULL){
+            return;
+        }
+        Node*pTemp=leftmost(root);
+        while(pTemp!=NULL){
+            cout<<pTemp->data<<"";
+            if(pTemp->isthreaded){
+                pTemp=pTemp->right;
+            }
+            else{
+                pTemp=leftmost(root->right);
+            }
+        }
+    }
+    
+    
+    // void jockeybinary(){
+    //     binarytree(root);
+    // }
+    
+    // void jockeythreaded(){
+        
+    //     threadedtree(root);
+    // }
+    
+    // void jockeyinorder(){
+    //     inorder();
+    // }
+
+};
+int main(){
+    Node* root=NULL;
+    int your_choice;
+    functions f1;
+    while(1){
+        cout<<"\n1. For Creation of bintree\n2. Thread Your tree\n3. Print Inorder\n4. Exit"<<endl;
+        cout<<"Enter Your Choice : ";
+        cin>>your_choice;
+        switch(your_choice){
+            case 1:
+                root=f1.binarytree(root);
+                break;
+            case 2:
+                f1.threadedtree(root);
+                break;
+            case 3:
+                cout<<"Inorder trversal of mytree is : ";
+                f1.inorder(root);
+                cout<<endl;
+                break;
+            case 4:
+                cout<<"Programme exited successfully";
+                exit(1);
+
+        }
+
+}
+
+
+}
